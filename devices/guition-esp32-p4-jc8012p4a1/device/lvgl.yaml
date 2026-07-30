@@ -115,7 +115,7 @@ lvgl:
           id: battery_status_icon_label
           text: "\U000F0928"   # 🔋!!!!!!!!!!!!!!!!!ИКОНКААА
           text_font: font_icon_status
-          align: left
+          align: top_left
           x: -55                
           y: 2                
           text_align: center
@@ -126,7 +126,7 @@ lvgl:
           id: battery_percent_label
           text: "--%"           
           text_font: font_text_body
-          align: left
+          align: top_left
           x: -16                 
           y: 4                  
           text_color: 0xFFFFFF
