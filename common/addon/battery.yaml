@@ -36,7 +36,7 @@
 binary_sensor:
   - platform: status
     name: "BatteryOnline"
-    id: ink_ha_connected
+    id: ink_ha_battery
     icon: mdi:battery
 script:
   - id: battery_status_refresh
