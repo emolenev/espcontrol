@@ -20,7 +20,7 @@ Sorry, but I can't support additional screens because of the complexity of testi
 
 ## What to Share
 
-When you find the right entity, [open an issue on GitHub](https://github.com/jtenniswood/espcontrol/issues/new) and include:
+When you find the right entity, [open an issue on GitHub](https://github.com/emolenev/espcontrol/issues/new) and include:
 
 - The device or entity name.
 - The entity ID, for example `sensor.living_room_air_quality`.

@@ -41,7 +41,7 @@ description:
 
 ## I Need Help With a Bug
 
-- Open a [GitHub issue](https://github.com/jtenniswood/espcontrol/issues/new) and describe the display model, firmware version, and what happened.
+- Open a [GitHub issue](https://github.com/emolenev/espcontrol/issues/new) and describe the display model, firmware version, and what happened.
 - For startup, WiFi, loading screen, or Home Assistant connection problems, include a USB log from the [Collect USB Logs](/reference/collect-usb-logs) guide.
 
 Next: [Setup](/features/setup)
