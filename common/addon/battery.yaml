@@ -1,0 +1,88 @@
+# =============================================================================
+# BATTERY - Internal battery monitor
+# =============================================================================
+# const char* get_battery_icon(int percent) {
+#   // percent: 0–100
+#   if (percent <= 0)      return "\U000F0091"; // unknown
+#   if (percent < 10)      return "\U000F007A"; // 10%
+#   if (percent < 20)      return "\U000F007B"; // 20%
+#   if (percent < 30)      return "\U000F007C"; // 30%
+#   if (percent < 40)      return "\U000F007D"; // 40%
+#   if (percent < 50)      return "\U000F007E"; // 50%
+#   if (percent < 60)      return "\U000F007F"; // 60%
+#   if (percent < 70)      return "\U000F0080"; // 70%
+#   if (percent < 80)      return "\U000F0081"; // 80%
+#   if (percent < 90)      return "\U000F0082"; // 90%
+#   return "\U000F0079";                       // full
+# }
+# Потом можно ставить иконку, например, в тот же модальный интерфейс:
+
+# cpp
+# const char* bat_icon = get_battery_icon(battery_percent);
+
+# ControlModalShell shell = control_modal_open_shell(
+#   ControlModalKind::NETWORK_STATUS, nullptr, 100, icon_font,
+#   bat_icon, true, network_status_hide_modal);
+# Важное условие
+# Эти коды сработают только если в твоём шрифте (icon_font) реально есть глифы MDI из диапазона U+F000–U+F0FF. Если шрифт собран без этих символов — будет квадратик.
+
+# Проверить можно простым тестом на экране:
+
+# cpp
+# lv_obj_t *tmp = lv_label_create(lv_scr_act());
+# lv_label_set_text(tmp, "Bat: \U000F0079");
+# lv_obj_align(tmp, LV_ALIGN_CENTER, 0, 0);
+# Если скажешь, какой именно вариант тебе нужен (просто «батарея», или ступенчатая шкала 10/20/30…%, или отдельно «зарядка» с молнией), подскажу, какие коды взять и как оформить.
+binary_sensor:
+  - platform: status
+    name: "Online"
+    id: ink_ha_connected
+    icon: mdi:battery
+script:
+  - id: battery_status_refresh
+    mode: restart
+    then:
+      - lambda: |-
+          battery_status_set_wifi_icon(id(battery_status_icon_label),
+                                       id(wifi_strength_percent).state,
+                                       wifi::global_wifi_component != nullptr &&
+                                         wifi::global_wifi_component->is_connected());
+
+  - id: battery_status_open_info
+    mode: single
+    then:
+      - lambda: |-
+          battery_status_open_modal(
+            "${friendly_name}",
+            battery_status_ip_address(),
+            "${firmware_version}",
+            id(${media_title_font})->get_lv_font(),
+            id(${icon_font})->get_lv_font());
+
+sensor:
+  - platform: adc
+    pin: GPIO52
+    id: battery_voltage
+    name: "${friendly_name} Battery Voltage"
+    entity_category: diagnostic
+    internal: true
+    attenuation: 12db
+    update_interval: 60s
+
+  - platform: copy
+    source_id: battery_voltage
+    id: battery_percent
+    name: "${friendly_name} Battery"
+    unit_of_measurement: "%"
+    device_class: battery
+    state_class: measurement
+    accuracy_decimals: 0
+    icon: mdi:battery
+    filters:
+      - lambda: |-
+          float p = (x - 1.80f) * 100.0f / (2.43f - 1.80f);
+
+          if (p < 0) p = 0;
+          if (p > 100) p = 100;
+
+          return p;

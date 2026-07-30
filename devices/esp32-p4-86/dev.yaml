@@ -1,0 +1,25 @@
+# =============================================================================
+# DEV CONFIG - Local development entry point (Waveshare 4" P4 square panel)
+# =============================================================================
+# Flash with: esphome run dev.yaml
+# =============================================================================
+
+substitutions:
+  name: "espcontrol-p4-86"
+  friendly_name: "EspControl P4-86"
+  espcontrol_component_url: "../.."
+  espcontrol_component_ref: "HEAD"
+  voice_wake_chime_file: "device/voice_wake_chime.flac"
+  voice_timer_alert_file: "device/voice_timer_alert.flac"
+  voice_stt_failure_chime_file: "device/voice_stt_failure_chime.flac"
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+packages:
+  espcontrol: !include packages.yaml
+
+web_server:
+  js_url: ""
+  js_include: "../../docs/public/webserver/esp32-p4-86/www.js"
