@@ -35,7 +35,7 @@
 # Если скажешь, какой именно вариант тебе нужен (просто «батарея», или ступенчатая шкала 10/20/30…%, или отдельно «зарядка» с молнией), подскажу, какие коды взять и как оформить.
 binary_sensor:
   - platform: status
-    name: "Online"
+    name: "BatteryOnline"
     id: ink_ha_connected
     icon: mdi:battery
 script:
